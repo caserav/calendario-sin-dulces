@@ -2,27 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calendario Sin Dulces</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reto pérdida de peso</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Calendario de 21 Días Sin Dulces</h1>
-    <p id="counter">Días sin dulces: <span id="daysCount">0</span> / 21</p>
-    <div class="calendar" id="calendar"></div>
-    <button id="gameOverBtn" class="choco-btn">🍫 He comido dulce</button>
+  <div class="background-calendar"></div>
+
+  <div class="content">
+    <h1>Reto: -4kg antes de Huelva 🚀</h1>
+
+    <div class="timeline-vertical" id="timeline"></div>
+
+    <button class="reset-btn" id="resetBtn">Reiniciar Reto</button>
   </div>
 
-  <div class="quote-overlay" id="quoteOverlay">
-    <div class="quote-box">
-      <p id="quoteText"></p>
-      <p id="quoteAuthor"></p>
+  <!-- Modal para introducir peso -->
+  <div class="modal" id="weightModal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalTarget"></p>
+      <div class="weight-control">
+        <button id="decreaseWeight" class="weight-btn">−</button>
+        <span id="currentWeightDisplay">57.0</span> kg
+        <button id="increaseWeight" class="weight-btn">+</button>
+      </div>
+      <button id="saveWeight" class="save-btn">Guardar</button>
     </div>
   </div>
 
-  <div class="game-over" id="gameOver">
-    <h1>GAME OVER</h1>
+  <!-- Modal de mensaje motivacional -->
+  <div class="modal" id="messageModal">
+    <div class="modal-content">
+      <span class="close" id="closeMessageModal">&times;</span>
+      <p id="messageText"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
