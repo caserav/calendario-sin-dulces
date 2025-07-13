@@ -1,179 +1,133 @@
-/* FONDO CALENDARIO */
-.background-calendar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/July_2022_Calendar_Spain.jpg/640px-July_2022_Calendar_Spain.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.15;
-  filter: blur(1px);
-  z-index: -1;
+const goalData = [
+  { date: "14 julio", target: 57 },
+  { date: "18 julio", target: 56 },
+  { date: "21 julio", target: 55 },
+  { date: "25 julio", target: 54 },
+  { date: "28 julio", target: 53 }
+];
+
+let timelineEl = document.getElementById("timeline");
+let modal = document.getElementById("weightModal");
+let modalTitle = document.getElementById("modalTitle");
+let modalTarget = document.getElementById("modalTarget");
+let decreaseBtn = document.getElementById("decreaseWeight");
+let increaseBtn = document.getElementById("increaseWeight");
+let currentWeightDisplay = document.getElementById("currentWeightDisplay");
+let saveWeightBtn = document.getElementById("saveWeight");
+let closeModalBtn = document.getElementById("closeModal");
+let messageModal = document.getElementById("messageModal");
+let messageText = document.getElementById("messageText");
+let closeMessageModalBtn = document.getElementById("closeMessageModal");
+let resetBtn = document.getElementById("resetBtn");
+
+let currentModalIndex = 0;
+let currentWeight = 57.0;
+let userData = JSON.parse(localStorage.getItem("weightData")) || {};
+
+initTimeline();
+
+function initTimeline() {
+  timelineEl.innerHTML = "";
+  goalData.forEach((data, index) => {
+    const item = document.createElement("div");
+    item.classList.add("timeline-item");
+    if (userData[data.date] !== undefined) item.classList.add("completed");
+
+    let icon = "🚩";
+    if (index === 0) icon = "🚩";
+    if (index === goalData.length - 1) icon = "🏁";
+
+    let weightText = userData[data.date] !== undefined
+      ? `${userData[data.date]} kg`
+      : `${data.target} kg`;
+
+    item.innerHTML = `
+      <div class="circle" data-index="${index}">
+        ${icon}<br>${weightText}
+      </div>
+      <div class="label">${data.date}</div>
+    `;
+
+    item.querySelector(".circle").addEventListener("click", () => {
+      openModal(index);
+    });
+
+    timelineEl.appendChild(item);
+  });
 }
 
-body {
-  margin: 0;
-  font-family: 'Helvetica Neue', sans-serif;
-  background: #fff;
-  color: #333;
-}
+function openModal(index) {
+  currentModalIndex = index;
+  const data = goalData[index];
 
-.content {
-  padding: 20px;
-  max-width: 500px;
-  margin: 0 auto;
-}
+  modalTitle.textContent = `Peso el ${data.date}`;
+  modalTarget.textContent = `Objetivo: ${data.target} kg`;
 
-h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.timeline-vertical {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.timeline-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px 0;
-  cursor: pointer;
-}
-
-.timeline-item .circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.3s;
-}
-
-.timeline-item .circle:hover {
-  transform: scale(1.1);
-}
-
-.timeline-item.completed .circle {
-  background-color: #2196F3;
-}
-
-.timeline-item .label {
-  margin-top: 8px;
-  font-size: 22px;
-  text-align: center;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.6);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 80px auto;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 320px;
-  text-align: center;
-  animation: fadeIn 0.5s;
-}
-
-.modal-content h2 {
-  margin-top: 0;
-}
-
-.weight-control {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.weight-btn {
-  font-size: 36px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #4CAF50;
-  color: #fff;
-  border: none;
-  margin: 0 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.weight-btn:hover {
-  background: #45a049;
-}
-
-.save-btn {
-  background: #2196F3;
-  border: none;
-  padding: 12px 20px;
-  color: #fff;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.save-btn:hover {
-  background: #1976D2;
-}
-
-.close {
-  float: right;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-50px);}
-  to { opacity: 1; transform: translateY(0);}
-}
-
-.reset-btn {
-  margin-top: 30px;
-  background: #f44336;
-  border: none;
-  color: white;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.reset-btn:hover {
-  background: #d32f2f;
-}
-
-@media (max-width: 600px) {
-  .timeline-item .circle {
-    width: 80px;
-    height: 80px;
-    font-size: 12px;
+  if (index === 0) {
+    currentWeight = 57.0;
+  } else {
+    let prevDate = goalData[index - 1].date;
+    currentWeight = userData[prevDate] || data.target;
   }
 
-  .weight-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 28px;
-  }
+  currentWeightDisplay.textContent = currentWeight.toFixed(1);
+  modal.style.display = "block";
 }
+
+decreaseBtn.addEventListener("click", () => {
+  currentWeight -= 0.1;
+  if (currentWeight < 30) currentWeight = 30;
+  currentWeightDisplay.textContent = currentWeight.toFixed(1);
+});
+
+increaseBtn.addEventListener("click", () => {
+  currentWeight += 0.1;
+  currentWeightDisplay.textContent = currentWeight.toFixed(1);
+});
+
+saveWeightBtn.addEventListener("click", () => {
+  const date = goalData[currentModalIndex].date;
+  const weight = parseFloat(currentWeight.toFixed(1));
+  const target = goalData[currentModalIndex].target;
+
+  userData[date] = weight;
+  localStorage.setItem("weightData", JSON.stringify(userData));
+
+  modal.style.display = "none";
+
+  let message = "";
+  if (weight <= target) {
+    message = "✅ ¡Buen trabajo!";
+    if (currentModalIndex === goalData.length - 1) {
+      message = "🎆 ¡META CONSEGUIDA! Disfruta Huelva 🎆";
+    }
+  } else {
+    message = "❌ No has alcanzado el objetivo.";
+  }
+
+  showMessageModal(message);
+  initTimeline();
+});
+
+closeModalBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+closeMessageModalBtn.addEventListener("click", () => {
+  messageModal.style.display = "none";
+});
+
+resetBtn.addEventListener("click", () => {
+  if (confirm("¿Seguro que quieres reiniciar el reto?")) {
+    localStorage.removeItem("weightData");
+    userData = {};
+    initTimeline();
+  }
+});
+
+function showMessageModal(msg) {
+  messageText.textContent = msg;
+  messageModal.style.display = "block";
+}
+
 
