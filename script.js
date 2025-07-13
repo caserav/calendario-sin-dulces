@@ -97,12 +97,12 @@ saveWeightBtn.addEventListener("click", () => {
 
   let message = "";
   if (weight <= target) {
-    message = "✅ ¡Buen trabajo!";
+    message = "✅ Muy bien Mar! Objetivo conseguido!";
     if (currentModalIndex === goalData.length - 1) {
       message = "🎆 ¡META CONSEGUIDA! Disfruta Huelva 🎆";
     }
   } else {
-    message = "❌ No has alcanzado el objetivo.";
+    message = "❌ Hay que seguir apretando!";
   }
 
   showMessageModal(message);
