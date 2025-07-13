@@ -1,199 +1,178 @@
-/* --- TUS ESTILOS BASE (MANTENIDOS) --- */
+/* FONDO CALENDARIO */
+.background-calendar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/July_2022_Calendar_Spain.jpg/640px-July_2022_Calendar_Spain.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  filter: blur(1px);
+  z-index: -1;
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #fefae0;
+  font-family: 'Helvetica Neue', sans-serif;
+  background: #fff;
   color: #333;
 }
 
-.container {
-  max-width: 900px;
+.content {
+  padding: 20px;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #bc6c25;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-#counter {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+.timeline-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* --- ESTILOS DEL CALENDARIO (MEJORADOS Y ADAPTADOS) --- */
-.calendar {
-  display: grid;
-  /* Usamos auto-fit para una mejor respuesta en diferentes pantallas */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem; /* Un poco más de espacio */
-}
-
-/* --- EL NUEVO DISEÑO DE LA TARJETA 'day' --- */
-.day {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: default; /* El cursor ya no es pointer en toda la tarjeta */
-  text-align: left; /* Alineamos el contenido a la izquierda */
-  border-left: 5px solid #bc6c25; /* Usamos tu color de acento */
-}
-
-.day:hover {
-  transform: translateY(-5px); /* Un efecto de elevación más notable */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-.day.completado {
-  border-left-color: #6a994e; /* Usamos tu color de éxito verde */
-  animation: exito-anim 0.5s ease-out;
-}
-
-/* Animación de "éxito" para la tarjeta completa */
-@keyframes exito-anim {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-/* Estilo para la fecha, dentro de la tarjeta */
-.fecha {
-    font-size: 1.1em;
-    font-weight: 600;
-    margin: 0 0 15px 0;
-    color: #333;
-}
-
-/* --- EL NUEVO CHECKBOX PERSONALIZADO --- */
-.day input[type="checkbox"] {
-  display: none; /* Ocultamos el checkbox real */
-}
-
-.day .control-check {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.day .control-check label {
-  position: relative;
-  padding-left: 35px;
-  line-height: 25px;
-  color: #333; /* Color de texto normal */
-  font-weight: normal; /* Lo hacemos de peso normal para que la fecha destaque */
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
   cursor: pointer;
 }
 
-/* La caja del checkbox */
-.day .control-check label::before {
-  content: '';
-  position: absolute;
+.timeline-item .circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.timeline-item .circle:hover {
+  transform: scale(1.1);
+}
+
+.timeline-item.completed .circle {
+  background-color: #2196F3;
+}
+
+.timeline-item .label {
+  margin-top: 8px;
+  font-size: 22px;
+  text-align: center;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
   left: 0;
   top: 0;
-  width: 22px;
-  height: 22px;
-  border: 2px solid #bc6c25; /* Usamos tu color de acento */
-  border-radius: 5px;
-  background-color: #fefae0; /* El color de fondo de tu web */
-  transition: background-color 0.3s, border-color 0.3s;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
 }
 
-/* El tick (marca de verificación) */
-.day .control-check label::after {
-  content: '';
-  position: absolute;
-  left: 8px;
-  top: 4px;
-  width: 6px;
-  height: 12px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.modal-content {
+  background-color: #fefefe;
+  margin: 80px auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 320px;
+  text-align: center;
+  animation: fadeIn 0.5s;
 }
 
-/* Estilos cuando el checkbox está marcado */
-.day input[type="checkbox"]:checked + label::before {
-  background-color: #6a994e; /* Tu color verde de éxito */
-  border-color: #6a994e; /* Tu color verde de éxito */
-  animation: check-pop 0.4s ease-out;
+.modal-content h2 {
+  margin-top: 0;
 }
 
-.day input[type="checkbox"]:checked + label::after {
-  opacity: 1;
+.weight-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
 
-/* Tu animación 'pulse' renombrada a 'check-pop' para evitar conflictos */
-@keyframes check-pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-
-/* --- TUS BOTONES Y MODALES (MANTENIDOS) --- */
-.choco-btn {
-  margin-top: 2rem;
-  background: #6a4c93;
-  color: white;
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
+.weight-btn {
+  font-size: 36px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4CAF50;
+  color: #fff;
   border: none;
-  border-radius: 50px;
+  margin: 0 10px;
   cursor: pointer;
   transition: background 0.3s;
 }
 
-.choco-btn:hover {
-  background: #8d6ac3;
+.weight-btn:hover {
+  background: #45a049;
 }
 
-.quote-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+.save-btn {
+  background: #2196F3;
+  border: none;
+  padding: 12px 20px;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: #1976D2;
+}
+
+.close {
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-50px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.reset-btn {
+  margin-top: 30px;
+  background: #f44336;
+  border: none;
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 100;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.quote-overlay.active {
-  opacity: 1;
-  pointer-events: all;
+.reset-btn:hover {
+  background: #d32f2f;
 }
 
-.quote-box {
-  max-width: 600px;
-  text-align: center;
-  font-size: 1.5rem;
-}
+@media (max-width: 600px) {
+  .timeline-item .circle {
+    width: 80px;
+    height: 80px;
+    font-size: 12px;
+  }
 
-.quote-box p {
-  margin: 1rem 0;
-}
-
-.game-over {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: black;
-  color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 4rem;
-  z-index: 1000;
-  display: none;
+  .weight-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+  }
 }
