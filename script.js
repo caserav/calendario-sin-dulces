@@ -1,9 +1,9 @@
 const goalData = [
-  { date: "14 julio", target: 57 },
-  { date: "18 julio", target: 56 },
-  { date: "21 julio", target: 55 },
-  { date: "25 julio", target: 54 },
-  { date: "28 julio", target: 53 }
+  { date: "14 julio", target: 59 },
+  { date: "17 julio", target: 58 },
+  { date: "21 julio", target: 57 },
+  { date: "24 julio", target: 56 },
+  { date: "27 julio", target: 55 }
 ];
 
 let timelineEl = document.getElementById("timeline");
@@ -21,7 +21,7 @@ let closeMessageModalBtn = document.getElementById("closeMessageModal");
 let resetBtn = document.getElementById("resetBtn");
 
 let currentModalIndex = 0;
-let currentWeight = 57.0;
+let currentWeight = 59.0;
 let userData = JSON.parse(localStorage.getItem("weightData")) || {};
 
 initTimeline();
@@ -64,7 +64,7 @@ function openModal(index) {
   modalTarget.textContent = `Objetivo: ${data.target} kg`;
 
   if (index === 0) {
-    currentWeight = 57.0;
+    currentWeight = 59.0;
   } else {
     let prevDate = goalData[index - 1].date;
     currentWeight = userData[prevDate] || data.target;
